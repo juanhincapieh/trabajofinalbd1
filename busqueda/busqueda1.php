@@ -6,10 +6,17 @@ include "../includes/header.php";
 <h1 class="mt-3">Búsqueda 1</h1>
 
 <p class="mt-3">
-    El código de un contrato. Se debe mostrar todas las reparaciones ejecutadas
-    por el mecánico asociado a dicho contrato pero siempre y cuando la fecha de dichas
-    reparaciones esté por fuera del intervalo de fechas de dicho contrato. (Esto significa que
-    fueron reparaciones ejecutadas por el mecánico cuando no tenía contrato).
+    <strong> El código de un contrato. Se debe mostrar todas las reparaciones ejecutadas por el 
+    mecánico asociado a dicho contrato pero siempre y cuando la fecha de dichas reparaciones 
+    esté por fuera del intervalo de fechas de dicho contrato. (Esto significa que fueron reparaciones 
+    ejecutadas por el mecánico cuando no tenía contrato). </strong>
+</p>
+
+<p class="mt-3y">
+    El código de un contrato. Se debe mostrar todas las secciones auxiliadas por el 
+    bibliotecario asociado a dicho contrato pero siempre y cuando la fecha de dichas secciones 
+    esté por fuera del intervalo de fechas de dicho contrato. (Esto significa que fueron secciones 
+    auxiliadas por el bibliotecario cuando no tenía contrato).
 </p>
 
 <!-- FORMULARIO. Cambiar los campos de acuerdo a su trabajo -->
@@ -29,8 +36,8 @@ include "../includes/header.php";
         </div>
 
         <div class="mb-3">
-            <label for="numero" class="form-label">Número</label>
-            <input type="number" class="form-control" id="numero" name="numero" required>
+            <label for="codigocontrato" class="form-label">Código de contrato</label>
+            <input type="number" class="form-control" id="codigocontrato" name="codigocontrato" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Buscar</button>
@@ -48,10 +55,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'):
 
     $fecha1 = $_POST["fecha1"];
     $fecha2 = $_POST["fecha2"];
-    $numero = $_POST["numero"];
+    $codigocontrato = $_POST["codigocontrato"];
 
     // Query SQL a la BD -> Crearla acá (No está completada, cambiarla a su contexto y a su analogía)
-    $query = "SELECT cedula, celular FROM cliente";
+    $query = `SELECT s.*
+                FROM contratotemporal AS ct
+                INNER JOIN bibliotecario AS b ON b.contratoid = ct.codigo
+                INNER JOIN seccion AS s ON s.auxiliarid = b.cedula
+                WHERE ct.codigo = '$codigocontrato'
+                    AND s.fechacreacion NOT BETWEEN '$fecha1' AND '$fecha2'
+                    AND (
+                        s.fechacreacion < ct.fechacontratacion OR
+                        s.fechacreacion > ct.fechaterminacion
+                )`;
 
     // Ejecutar la consulta
     $resultadoB1 = mysqli_query($conn, $query) or die(mysqli_error($conn));

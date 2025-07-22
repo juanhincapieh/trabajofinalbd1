@@ -6,9 +6,16 @@ include "../includes/header.php";
 <h1 class="mt-3">Consulta 2</h1>
 
 <p class="mt-3">
-    El segundo botón debe mostrar los datos de los mecánicos que tienen contrato
-    asociado, que han ejecutado al menos dos ( 2 reparaciones) reparaciones y que
-    nunca han sido receptores.
+    <strong> El segundo botón debe mostrar los datos de los mecánicos 
+        que tienen contrato asociado, que han ejecutado al menos dos
+        (>= 2 reparaciones) reparaciones y que nunca han sido receptores. 
+    </strong>
+</p>
+
+<p class="mt-3y">
+    El segundo botón debe mostrar los datos de los bibliotecarios 
+    que tienen contrato asociado, que han auxiliado al menos dos
+    (>= 2 secciones) secciones y que nunca han sido administradores. 
 </p>
 
 <?php
@@ -16,7 +23,16 @@ include "../includes/header.php";
 require('../config/conexion.php');
 
 // Query SQL a la BD -> Crearla acá (No está completada, cambiarla a su contexto y a su analogía)
-$query = "SELECT codigo, valor FROM proyecto";
+$query = "SELECT b.*
+            FROM bibliotecario AS b
+            JOIN seccion AS s ON b.cedula = s.auxiliarid
+            WHERE b.contratoid IS NOT NULL
+            AND b.cedula NOT IN (
+                SELECT DISTINCT adminid FROM seccion
+            )
+            GROUP BY b.cedula, b.nombre, b.apellido, b.contratoid
+            HAVING COUNT(*) >= 2";
+
 
 // Ejecutar la consulta
 $resultadoC2 = mysqli_query($conn, $query) or die(mysqli_error($conn));
@@ -39,6 +55,8 @@ if($resultadoC2 and $resultadoC2->num_rows > 0):
             <tr>
                 <th scope="col" class="text-center">Cédula</th>
                 <th scope="col" class="text-center">Nombre</th>
+                <th scope="col" class="text-center">Apellido</th>
+                <th scope="col" class="text-center">ID Contrato</th>
             </tr>
         </thead>
 
@@ -54,6 +72,8 @@ if($resultadoC2 and $resultadoC2->num_rows > 0):
                 <!-- Cada una de las columnas, con su valor correspondiente -->
                 <td class="text-center"><?= $fila["cedula"]; ?></td>
                 <td class="text-center"><?= $fila["nombre"]; ?></td>
+                <td class="text-center"><?= $fila["apellido"]; ?></td>
+                <td class="text-center"><?= $fila["contratoid"]; ?></td>
             </tr>
 
             <?php
