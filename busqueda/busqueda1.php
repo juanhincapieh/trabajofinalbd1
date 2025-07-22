@@ -6,9 +6,10 @@ include "../includes/header.php";
 <h1 class="mt-3">Búsqueda 1</h1>
 
 <p class="mt-3">
-    Dos fechas f1 y f2 (cada fecha con día, mes y año), f2 ≥ f1 y un número entero n,
-    n ≥ 0. Se debe mostrar la cédula y el celular de todos los clientes que han 
-    revisado exactamente n proyectos en dicho rango de fechas [f1, f2].
+    El código de un contrato. Se debe mostrar todas las reparaciones ejecutadas
+    por el mecánico asociado a dicho contrato pero siempre y cuando la fecha de dichas
+    reparaciones esté por fuera del intervalo de fechas de dicho contrato. (Esto significa que
+    fueron reparaciones ejecutadas por el mecánico cuando no tenía contrato).
 </p>
 
 <!-- FORMULARIO. Cambiar los campos de acuerdo a su trabajo -->
