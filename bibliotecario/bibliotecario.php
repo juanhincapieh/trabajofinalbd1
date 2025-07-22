@@ -25,7 +25,7 @@ include "../includes/header.php";
             <input type="text" class="form-control" id="apellido" name="apellido" required>
         </div>
 
-                <!-- Consultar la lista de clientes y desplegarlos -->
+        <!-- Consultar la lista de clientes y desplegarlos -->
         <div class="mb-3">
             <label for="contratoid" class="form-label">ID Contrato</label>
             <select name="contratoid" id="contratoid" class="form-select">

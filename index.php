@@ -45,7 +45,7 @@
         <ul>
             <li><a href="bibliotecario/bibliotecario.php">Entidad análoga a MECÁNICO (BIBLIOTECARIO)</a></li>
             <li><a href="contrato/contrato.php">Entidad análoga a CONTRATO (CONTRATO TEMPORAL)</a></li>
-            <li><a href="reparacion/reparacion.php">Entidad análoga a REPARACIÓN (SECCIÓN)</a></li>
+            <li><a href="seccion/seccion.php">Entidad análoga a REPARACIÓN (SECCIÓN)</a></li>
             <li><a href="consultas/consulta1.php">Consulta 1</a></li>
             <li><a href="consultas/consulta2.php">Consulta 2</a></li>
             <li><a href="busqueda/busqueda1.php">Búsqueda 1</a></li>

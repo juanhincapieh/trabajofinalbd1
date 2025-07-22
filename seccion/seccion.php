@@ -3,49 +3,59 @@ include "../includes/header.php";
 ?>
 
 <!-- TÍTULO. Cambiarlo, pero dejar especificada la analogía -->
-<h1 class="mt-3">Entidad análoga a PROYECTO (NOMBRE)</h1>
+<h1 class="mt-3">Entidad análoga a REPARACIÓN (SECCIÓN)</h1>
 
 <!-- FORMULARIO. Cambiar los campos de acuerdo a su trabajo -->
 <div class="formulario p-4 m-3 border rounded-3">
 
-    <form action="proyecto_insert.php" method="post" class="form-group">
+    <form action="seccion_insert.php" method="post" class="form-group">
 
         <div class="mb-3">
-            <label for="codigo" class="form-label">Código</label>
-            <input type="number" class="form-control" id="codigo" name="codigo" required>
+            <label for="codBiblioteca" class="form-label">Código de biblioteca</label>
+            <input type="number" class="form-control" id="codBiblioteca" name="codBiblioteca" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="piso" class="form-label">Piso</label>
+            <input type="number" class="form-control" id="piso" name="piso" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="pasillo" class="form-label">Pasillo</label>
+            <input type="text" class="form-control" id="pasillo" name="pasillo" required>
         </div>
 
         <div class="mb-3">
             <label for="fechacreacion" class="form-label">Fecha de creación</label>
             <input type="date" class="form-control" id="fechacreacion" name="fechacreacion" required>
         </div>
-
-        <div class="mb-3">
-            <label for="valor" class="form-label">Valor</label>
-            <input type="number" class="form-control" id="valor" name="valor" required>
-        </div>
         
         <!-- Consultar la lista de clientes y desplegarlos -->
         <div class="mb-3">
-            <label for="cliente" class="form-label">Cliente</label>
-            <select name="cliente" id="cliente" class="form-select">
-                
+            <label for="adminid" class="form-label">ID Administrador</label>
+            <select name="adminid" id="adminid" class="form-select" required>
+
                 <!-- Option por defecto -->
-                <option value="" selected disabled hidden></option>
+                <option selected></option>
 
                 <?php
                 // Importar el código del otro archivo
-                require("../cliente/cliente_select.php");
-                
+                require("../bibliotecario/bibliotecario_select.php");
+
                 // Verificar si llegan datos
-                if($resultadoCliente):
+                if($resultadoBibliotecario and $resultadoBibliotecario->num_rows > 0):
                     
                     // Iterar sobre los registros que llegaron
-                    foreach ($resultadoCliente as $fila):
+                    foreach ($resultadoBibliotecario as $fila):
                 ?>
 
                 <!-- Opción que se genera -->
-                <option value="<?= $fila["cedula"]; ?>"><?= $fila["nombre"]; ?> - C.C. <?= $fila["cedula"]; ?></option>
+                <option value="<?= $fila["cedula"]; ?>"><?= $fila["cedula"]; ?></option>
 
                 <?php
                         // Cerrar los estructuras de control
@@ -57,25 +67,25 @@ include "../includes/header.php";
 
         <!-- Consultar la lista de empresas y desplegarlos -->
         <div class="mb-3">
-            <label for="empresa" class="form-label">Empresa</label>
-            <select name="empresa" id="empresa" class="form-select">
-                
+            <label for="auxiliarid" class="form-label">ID Auxiliar</label>
+            <select name="auxiliarid" id="auxiliarid" class="form-select">
+
                 <!-- Option por defecto -->
-                <option value="" selected disabled hidden></option>
+                <option selected></option>
 
                 <?php
                 // Importar el código del otro archivo
-                require("../empresa/empresa_select.php");
-                
+                require("../bibliotecario/bibliotecario_select.php");
+
                 // Verificar si llegan datos
-                if($resultadoEmpresa):
+                if($resultadoBibliotecario):
                     
                     // Iterar sobre los registros que llegaron
-                    foreach ($resultadoEmpresa as $fila):
+                    foreach ($resultadoBibliotecario as $fila):
                 ?>
 
                 <!-- Opción que se genera -->
-                <option value="<?= $fila["nit"]; ?>"><?= $fila["nombre"]; ?> - NIT: <?= $fila["nit"]; ?></option>
+                <option value="<?= $fila["cedula"]; ?>"><?= $fila["cedula"]; ?></option>
 
                 <?php
                         // Cerrar los estructuras de control
@@ -93,10 +103,10 @@ include "../includes/header.php";
 
 <?php
 // Importar el código del otro archivo
-require("proyecto_select.php");
+require("seccion_select.php");
             
 // Verificar si llegan datos
-if($resultadoProyecto and $resultadoProyecto->num_rows > 0):
+if($resultadoSeccion and $resultadoSeccion->num_rows > 0):
 ?>
 
 <!-- MOSTRAR LA TABLA. Cambiar las cabeceras -->
@@ -107,12 +117,13 @@ if($resultadoProyecto and $resultadoProyecto->num_rows > 0):
         <!-- Títulos de la tabla, cambiarlos -->
         <thead class="table-dark">
             <tr>
-                <th scope="col" class="text-center">Código</th>
+                <th scope="col" class="text-center">Código de biblioteca</th>
+                <th scope="col" class="text-center">Nombre</th>
+                <th scope="col" class="text-center">Piso</th>
+                <th scope="col" class="text-center">Pasillo</th>
                 <th scope="col" class="text-center">Fecha de creación</th>
-                <th scope="col" class="text-center">Valor</th>
-                <th scope="col" class="text-center">Cliente</th>
-                <th scope="col" class="text-center">Empresa</th>
-                <th scope="col" class="text-center">Acciones</th>
+                <th scope="col" class="text-center">ID Administrador</th>
+                <th scope="col" class="text-center">ID Auxiliar</th>
             </tr>
         </thead>
 
@@ -120,22 +131,25 @@ if($resultadoProyecto and $resultadoProyecto->num_rows > 0):
 
             <?php
             // Iterar sobre los registros que llegaron
-            foreach ($resultadoProyecto as $fila):
+            foreach ($resultadoSeccion as $fila):
             ?>
 
             <!-- Fila que se generará -->
             <tr>
                 <!-- Cada una de las columnas, con su valor correspondiente -->
-                <td class="text-center"><?= $fila["codigo"]; ?></td>
+                <td class="text-center"><?= $fila["codBiblioteca"]; ?></td>
+                <td class="text-center"><?= $fila["nombre"]; ?></td>
+                <td class="text-center"><?= $fila["piso"]; ?></td>
+                <td class="text-center"><?= $fila["pasillo"]; ?></td>
                 <td class="text-center"><?= $fila["fechacreacion"]; ?></td>
-                <td class="text-center">$<?= $fila["valor"]; ?></td>
-                <td class="text-center">C.C. <?= $fila["cliente"]; ?></td>
-                <td class="text-center">NIT: <?= $fila["empresa"]; ?></td>
+                <td class="text-center"><?= $fila["adminid"]; ?></td>
+                <td class="text-center"><?= $fila["auxiliarid"]; ?></td>
                 
                 <!-- Botón de eliminar. Debe de incluir la CP de la entidad para identificarla -->
                 <td class="text-center">
-                    <form action="proyecto_delete.php" method="post">
-                        <input hidden type="text" name="codigoEliminar" value="<?= $fila["codigo"]; ?>">
+                    <form action="seccion_delete.php" method="post">
+                        <input hidden type="text" name="codigoEliminar" value="<?= $fila["codBiblioteca"]; ?>">
+                        <input hidden type="text" name="nombreEliminar" value="<?= $fila["nombre"]; ?>">
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
                 </td>
