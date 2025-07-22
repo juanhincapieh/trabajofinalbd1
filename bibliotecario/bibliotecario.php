@@ -31,7 +31,7 @@ include "../includes/header.php";
             <select name="contratoid" id="contratoid" class="form-select">
 
                 <!-- Option por defecto -->
-                <option value="" selected disabled hidden></option>
+                <option selected></option>
 
                 <?php
                 // Importar el código del otro archivo
